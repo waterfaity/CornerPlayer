@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activity.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/main_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="111px">
+
+        <HorizontalScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/scroll_view_lin"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16px">
+
+                <include layout="@layout/item_time_line" />
+
+                <include layout="@layout/item_time_line" />
+
+                <include layout="@layout/item_time_line" />
+
+                <include layout="@layout/item_time_line" />
+
+                <include layout="@layout/item_time_line" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/time_stroke"
+            android:layout_width="wrap_content"
+            android:layout_height="232px"
+            android:layout_alignBottom="@+id/scroll_view"
+            android:layout_alignLeft="@+id/scroll_view"
+            android:layout_alignRight="@+id/scroll_view"
+            android:background="@drawable/bg_item_pic"
+            android:orientation="horizontal" />
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
