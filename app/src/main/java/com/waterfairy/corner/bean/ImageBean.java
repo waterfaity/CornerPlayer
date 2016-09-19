@@ -7,13 +7,22 @@ import android.graphics.drawable.Drawable;
  * Created by m on 2016/9/18.
  */
 public class ImageBean {
-    String path;
-    Long size;
-    String name;
-    int height;
-    int width;
-    String compressPath;
-    int type;
+    private String path;
+    private Long size;
+    private String name;
+    private int height;
+    private int width;
+    private String compressPath;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    private  int type;
 
     public String getCompressPath() {
         return compressPath;
