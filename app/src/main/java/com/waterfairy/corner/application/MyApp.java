@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.waterfairy.corner.utils.PermissionUtils;
+
 /**
  * Created by shui on 2016/9/17.
  */
@@ -17,8 +19,13 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        myApp = this;
+        initApp();
+    }
 
+
+
+    private void initApp() {
+        myApp = this;
     }
 
     public static MyApp getInstance() {
@@ -31,7 +38,8 @@ public class MyApp extends Application {
         height = displayMetrics.heightPixels;
         density = displayMetrics.density;
     }
-//
+
+    //
     public int getHeight() {
         if (height > width) {
             return height;
