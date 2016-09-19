@@ -31,7 +31,7 @@ public class MyApp extends Application {
         height = displayMetrics.heightPixels;
         density = displayMetrics.density;
     }
-
+//
     public int getHeight() {
         if (height > width) {
             return height;
