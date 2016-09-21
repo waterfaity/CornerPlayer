@@ -215,22 +215,10 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     public void onOnLongLick(View view, int position) {
         if (mLastTime == null) {
-//            int top = view.getTop();
-//            int bottom = view.getBottom();
-//            int left = view.getLeft();
-//            int right = view.getRight();
-//            Log.i(TAG, "self: top" + top + "--bottom:" + bottom + "--left:" + left + "--right:" + right);
             RelativeLayout parent = (RelativeLayout) view.getParent();
-//            Log.i(TAG, "parent: top" + parent.getTop() + "--bottom:" + parent.getBottom() + "-- left" + parent.getLeft()+"--right:"+parent.getRight());
-//            GridView gridView = (GridView) parent.getParent();
-//            Log.i(TAG, "gridView: top" + gridView.getTop() + "--bottom:" + gridView.getBottom() + "--" + gridView.getLeft());
             HorizontalScrollView scrollView = (HorizontalScrollView) parent.getParent().getParent().getParent();
-//            Log.i(TAG, "scrollView: top" + scrollView.getTop() + "--left:" + scrollView.getLeft());
-
-//            Log.i(TAG, "onOnLongLick:getPivotX " + scrollView.getPivotX());
-//            Log.i(TAG, "onOnLongLick:getScrollX " + scrollView.getScrollX());
             int itemWidth = view.getBottom() - view.getTop();
-            int x = parent.getLeft()-scrollView.getScrollX() + scrollView.getLeft() + itemWidth / 2;
+            int x = parent.getLeft() - scrollView.getScrollX() + scrollView.getLeft() + itemWidth / 2;
             int y = parent.getTop() + scrollView.getTop() + itemWidth / 2;
             Log.i(TAG, "onOnLongLick: X:" + x + "-- Y:" + y);
         }
