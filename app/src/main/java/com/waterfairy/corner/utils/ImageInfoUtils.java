@@ -38,6 +38,7 @@ public class ImageInfoUtils {
                 if(file.isDirectory()){
                     bean= getFirstImageBean(file);
                 }else {
+                    bean=new ImageBean();
                     if (isImage(file)){
                      bean.setType(TYPE_IMAGE);
                     }else if (isVideo(file)){
@@ -69,7 +70,7 @@ public class ImageInfoUtils {
 * */
     public static String getFileFormat(File file){
      String name = file.getName();
-        String format = name.substring(name.lastIndexOf("."+1));
+        String format = name.substring(name.lastIndexOf("." ));
         if (TextUtils.isEmpty(format)){
 //TODO:没有格式的文件返回什么东东；
         }

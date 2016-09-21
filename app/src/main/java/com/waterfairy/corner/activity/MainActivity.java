@@ -3,10 +3,13 @@ package com.waterfairy.corner.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -26,7 +29,8 @@ import com.waterfairy.corner.view.MainView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener, PicAdapter.OnLongClickListener {
+    private static final String TAG = "main";
     //presenter
     private MainPresenter mPresenter;
     //data
@@ -41,10 +45,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private LinearLayout mLLStroke;//边框
     private GridView mGridView;//资源列表
     private HorizontalScrollView mScrollViewLib;//资源列表滚动
+
     //adapter
     private PicAdapter mAdapter;
     private List<ImageBean> mList;
-
+    //时间轴
+    private List<LinearLayout> mTimeContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,18 +127,29 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     //24个小时内容
     private void initScrollView() {
+        mTimeContent = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_time_line, null);
+            //时间 0:00
             TextView time = (TextView) view.findViewById(R.id.time);
-
             time.setTextSize(getLen(MetricsUtils.size_time));
+            time.setTextColor(getResources().getColor(R.color.normal_text));
             time.setText(i + ":00");
+            //箭头
             ImageView arrowImg = (ImageView) view.findViewById(R.id.arrow);
             arrowImg.getLayoutParams().width = getLen(MetricsUtils.height_arrow);
             arrowImg.getLayoutParams().height = getLen(MetricsUtils.height_arrow);
             ((LinearLayout.LayoutParams) arrowImg.getLayoutParams()).bottomMargin = getLen(MetricsUtils.height_arrow);
+            //时间和监听LinearLayout
             LinearLayout timeLin = (LinearLayout) view.findViewById(R.id.time_lin);
             timeLin.getLayoutParams().width = getLen(MetricsUtils.item_time);
+            timeLin.setTag(time);
+            time.setTag(i);
+            timeLin.setOnClickListener(this);
+            //存放多个图片
+            LinearLayout imgContent = (LinearLayout) view.findViewById(R.id.time_pic_content);
+            mTimeContent.add(imgContent);
+            //默认放入的一个图片
             ImageView img = (ImageView) view.findViewById(R.id.img);
             img.getLayoutParams().height = getLen(MetricsUtils.item_time);
             img.getLayoutParams().width = getLen(MetricsUtils.item_time);
@@ -161,7 +178,61 @@ public class MainActivity extends AppCompatActivity implements MainView {
             initGridView(mList.size());
             mAdapter = new PicAdapter(this, mList);
             mGridView.setAdapter(mAdapter);
+            mAdapter.setOnLongClickListener(this);
 
+        }
+    }
+
+    /**
+     * 如果不为空 说明已经选中时间轴
+     * 为空 没哟选中时间轴
+     */
+    private TextView mLastTime;
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.time_lin) {
+            TextView time = (TextView) v.getTag();
+            int position = (int) time.getTag();
+            if (time == mLastTime) {
+                mLastTime = null;
+                time.setTextColor(getResources().getColor(R.color.normal_text));
+                mAdapter.setCheckboxVisibility(false);
+                return;
+            }
+            if (mLastTime != null) {
+                mLastTime.setTextColor(getResources().getColor(R.color.normal_text));
+            }
+            time.setTextColor(getResources().getColor(R.color.red));
+            mLastTime = time;
+            mAdapter.setCheckboxVisibility(true);
+        }
+    }
+
+    //资源库长点击
+
+    @Override
+    public void onOnLongLick(View view, int position) {
+        if (mLastTime == null) {
+//            int top = view.getTop();
+//            int bottom = view.getBottom();
+//            int left = view.getLeft();
+//            int right = view.getRight();
+//            Log.i(TAG, "self: top" + top + "--bottom:" + bottom + "--left:" + left + "--right:" + right);
+            RelativeLayout parent = (RelativeLayout) view.getParent();
+//            Log.i(TAG, "parent: top" + parent.getTop() + "--bottom:" + parent.getBottom() + "-- left" + parent.getLeft()+"--right:"+parent.getRight());
+//            GridView gridView = (GridView) parent.getParent();
+//            Log.i(TAG, "gridView: top" + gridView.getTop() + "--bottom:" + gridView.getBottom() + "--" + gridView.getLeft());
+            HorizontalScrollView scrollView = (HorizontalScrollView) parent.getParent().getParent().getParent();
+//            Log.i(TAG, "scrollView: top" + scrollView.getTop() + "--left:" + scrollView.getLeft());
+
+//            Log.i(TAG, "onOnLongLick:getPivotX " + scrollView.getPivotX());
+//            Log.i(TAG, "onOnLongLick:getScrollX " + scrollView.getScrollX());
+            int itemWidth = view.getBottom() - view.getTop();
+            int x = parent.getLeft()-scrollView.getScrollX() + scrollView.getLeft() + itemWidth / 2;
+            int y = parent.getTop() + scrollView.getTop() + itemWidth / 2;
+            Log.i(TAG, "onOnLongLick: X:" + x + "-- Y:" + y);
         }
     }
 }
