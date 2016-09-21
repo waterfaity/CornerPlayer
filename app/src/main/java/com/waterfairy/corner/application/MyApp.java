@@ -1,6 +1,7 @@
 package com.waterfairy.corner.application;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -38,5 +39,10 @@ public class MyApp extends Application {
         } else {
             return width;
         }
+    }
+
+    //方便在任意位置获取Context
+    public static Context getContext(){
+        return  getContext();
     }
 }

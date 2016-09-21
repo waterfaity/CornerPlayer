@@ -1,7 +1,12 @@
 package com.waterfairy.corner.utils;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.waterfairy.corner.application.MyApp;
 import com.waterfairy.corner.bean.ImageBean;
 
 import java.io.File;
@@ -48,6 +53,17 @@ public class ImageInfoUtils {
         }
         return images;
     }
+
+    /*
+* 返回父文件夹的图片列表信息
+* */
+    public static List<ImageBean> getParentFolderImager(String dirPath){
+        File dir = new File(dirPath);
+        String parent =dir.getParent();
+        return  getFolderImager(parent);
+    }
+
+
 /*
 * 获取文件格式
 * */
@@ -55,7 +71,7 @@ public class ImageInfoUtils {
      String name = file.getName();
         String format = name.substring(name.lastIndexOf("."+1));
         if (TextUtils.isEmpty(format)){
-
+//TODO:没有格式的文件返回什么东东；
         }
         return   format;
     }
@@ -91,6 +107,7 @@ public class ImageInfoUtils {
         if (files!=null){
             for(File file:files){
                 if (isImage(file)||isVideo(file)){
+                    bean = new ImageBean();
                     bean.setName(file.getName());
                     bean.setPath(file.getAbsolutePath());
                 }
@@ -100,5 +117,15 @@ public class ImageInfoUtils {
         }
         return bean;
     }
+
+
+  /*  ContentResolver resolver = MyApp.getContext().getContentResolver();
+    Uri  uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+    Cursor cursor = resolver.query(uri,)*/
+
+
+
+
+
 }
 
