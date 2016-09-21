@@ -23,8 +23,9 @@ public class MetricsUtils {
     public static int bottom_item_time = 14;//时间轴 条目右侧间距
 
     public static int item_library = 160;//资源库 条目宽度
-    public static int right_item_library = 20;//资源库 条目右侧间距
+    public static int right_item_library = 21;//资源库 条目右侧间距
     public static int top_item_library = 16;
+    public static int top_library = 36;
 
     private static int item_time_padding = 16;//时间轴 边框距离
     //比例转换
