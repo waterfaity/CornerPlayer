@@ -3,10 +3,12 @@ package com.waterfairy.corner.bean;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import com.orm.SugarRecord;
+
 /**
  * Created by m on 2016/9/18.
  */
-public class ImageBean {
+public class ImageBean extends SugarRecord {
     private String path;
     private Long size;
     private String name;
@@ -22,7 +24,7 @@ public class ImageBean {
         this.type = type;
     }
 
-    private  int type;
+    private int type;
 
     public String getCompressPath() {
         return compressPath;

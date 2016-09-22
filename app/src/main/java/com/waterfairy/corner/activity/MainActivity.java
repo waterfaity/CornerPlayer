@@ -6,10 +6,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -22,6 +20,7 @@ import com.waterfairy.corner.adapter.PicAdapter;
 import com.waterfairy.corner.application.MyApp;
 import com.waterfairy.corner.bean.ImageBean;
 import com.waterfairy.corner.presenter.MainPresenter;
+import com.waterfairy.corner.utils.AnnotationUtils;
 import com.waterfairy.corner.utils.MetricsUtils;
 import com.waterfairy.corner.utils.PermissionUtils;
 import com.waterfairy.corner.view.MainView;
@@ -29,7 +28,7 @@ import com.waterfairy.corner.view.MainView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener, PicAdapter.OnLongClickListener {
+public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener, PicAdapter.OnLongClickListener, View.OnLongClickListener {
     private static final String TAG = "main";
     //presenter
     private MainPresenter mPresenter;
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     private List<ImageBean> mList;
     //时间轴
     private List<LinearLayout> mTimeContent;
+    private TextView mPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,12 +148,18 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
             timeLin.setOnClickListener(this);
             //存放多个图片
             LinearLayout imgContent = (LinearLayout) view.findViewById(R.id.time_pic_content);
-            mTimeContent.add(imgContent);
             //默认放入的一个图片
-            ImageView img = (ImageView) view.findViewById(R.id.img);
-            img.getLayoutParams().height = getLen(MetricsUtils.item_time);
-            img.getLayoutParams().width = getLen(MetricsUtils.item_time);
-
+            ImageView img = (ImageView) view.findViewById(R.id.time_img);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) img.getLayoutParams();
+            layoutParams.height = getLen(MetricsUtils.item_time);
+            layoutParams.width = getLen(MetricsUtils.item_time);
+            layoutParams.leftMargin = getLen(MetricsUtils.left_item_time);
+            if (i == 23) {
+                layoutParams.rightMargin = getLen(MetricsUtils.left_item_time);
+            }
+            img.setTag(i + "-" + 0);
+            img.setOnLongClickListener(this);
+            mTimeContent.add(imgContent);
             mLLScrollView.addView(view);
         }
     }
@@ -164,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         mLLScrollView = (LinearLayout) findViewById(R.id.scroll_view_lin);
         mGridView = (GridView) findViewById(R.id.grid);
         mScrollViewLib = (HorizontalScrollView) findViewById(R.id.scrollView_lib);
+        mPoint = (TextView) findViewById(R.id.point);
     }
 
     private int getLen(int len) {
@@ -218,9 +225,32 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
             RelativeLayout parent = (RelativeLayout) view.getParent();
             HorizontalScrollView scrollView = (HorizontalScrollView) parent.getParent().getParent().getParent();
             int itemWidth = view.getBottom() - view.getTop();
-            int x = parent.getLeft() - scrollView.getScrollX() + scrollView.getLeft() + itemWidth / 2;
-            int y = parent.getTop() + scrollView.getTop() + itemWidth / 2;
+            int x = parent.getLeft() - scrollView.getScrollX() + scrollView.getLeft();
+            int y = parent.getTop() + scrollView.getTop();
             Log.i(TAG, "onOnLongLick: X:" + x + "-- Y:" + y);
+            AnnotationUtils.transTo(mPoint, x - 10, y - 10);
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v.getId() == R.id.time_img) {
+            String tag = (String) v.getTag();
+            String[] split = tag.split("-");
+            int pos1 = Integer.parseInt(split[0]);
+            int pos2 = Integer.parseInt(split[1]);
+
+
+            LinearLayout parent = (LinearLayout) v.getParent();
+            RelativeLayout parent1 = (RelativeLayout) parent.getParent();
+            HorizontalScrollView scrollView = (HorizontalScrollView) parent1.getParent().getParent();
+            int x = parent.getLeft() + parent1.getLeft() - scrollView.getScrollX() +
+                    scrollView.getLeft() + getLen(MetricsUtils.left_item_time);
+            int y = parent.getTop() + parent1.getTop() + +scrollView.getTop();
+            Log.i(TAG, "onLongClick: X:" + x + "-- Y:" + y);
+
+            AnnotationUtils.transTo(mPoint, x - 10, y - 10);
+        }
+        return false;
     }
 }
