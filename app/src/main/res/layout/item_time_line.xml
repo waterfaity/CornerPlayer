@@ -37,11 +37,9 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/time_img"
             android:layout_width="200px"
             android:layout_height="200px"
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
             android:background="@drawable/bg_item_pic"
             android:padding="1px"
             android:src="@drawable/ic_add_black_36dp" />

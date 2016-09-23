@@ -5,12 +5,13 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.orm.SugarApp;
 import com.waterfairy.corner.utils.PermissionUtils;
 
 /**
  * Created by shui on 2016/9/17.
  */
-public class MyApp extends Application {
+public class MyApp extends SugarApp{
 
     private static MyApp myApp;
     private static int width;
@@ -21,8 +22,12 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         initApp();
+        initSugarDb();
     }
 
+    private void initSugarDb() {
+
+    }
 
 
     private void initApp() {
@@ -50,7 +55,7 @@ public class MyApp extends Application {
     }
 
     //方便在任意位置获取Context
-    public static Context getContext(){
-        return  getContext();
+    public Context getContext() {
+        return getApplicationContext();
     }
 }
