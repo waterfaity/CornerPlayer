@@ -28,7 +28,7 @@ public class ImageInfoUtils {
 
    /* *//*
     * 返回文件夹下的图片，如果是文件夹，则返回该文件夹的一张图片
-    * *//*
+    * */
     public static List<ImageBean> getFolderImager(String dirPath) {
         List<ImageBean> images = new LinkedList<ImageBean>();
         File dir = new File(dirPath);
@@ -55,9 +55,9 @@ public class ImageInfoUtils {
         return images;
     }
 
-    *//*
+    /*
 * 返回父文件夹的图片列表信息
-* *//*
+* */
     public static List<ImageBean> getParentFolderImager(String dirPath) {
         File dir = new File(dirPath);
         String parent = dir.getParent();
@@ -65,9 +65,9 @@ public class ImageInfoUtils {
     }
 
 
-    *//*
+   /*
     * 获取文件格式
-    * *//*
+    * */
     public static String getFileFormat(File file) {
         String name = file.getName();
         String format = name.substring(name.lastIndexOf("." + 1));
@@ -77,9 +77,9 @@ public class ImageInfoUtils {
         return format;
     }
 
-    *//*
+   /*
     * 判断文件是否为图片
-    * *//*
+    * */
     public static boolean isImage(File file) {
         boolean isImage = false;
         String format = getFileFormat(file);
@@ -89,9 +89,9 @@ public class ImageInfoUtils {
         return isImage;
     }
 
-    *//*
+    /*
     * 判断文件是否为视频
-    * *//*
+    * */
     public static boolean isVideo(File file) {
         boolean isVideo = false;
         String format = getFileFormat(file);
@@ -101,9 +101,9 @@ public class ImageInfoUtils {
         return isVideo;
     }
 
-    *//*
+    /*
     * 获取文件夹中的一张图片的信息
-    * *//*
+    * */
     public static ImageBean getFirstImageBean(File dir) {
         ImageBean bean = null;
         File files[] = dir.listFiles();
@@ -119,7 +119,7 @@ public class ImageInfoUtils {
             }
         }
         return bean;
-    }*/
+    }
 /*
 *
 * 获取文件夹下的所有图片缩略图
