@@ -9,6 +9,9 @@ import com.orm.SugarRecord;
  * Created by m on 2016/9/18.
  */
 public class ImageBean extends SugarRecord {
+    public  static  int  TYPE_IMAGE=0;
+    public  static  int  TYPE_Video =1;
+    public  static  int  TYPE_Folder=2;
     private String path;
     private Long size;
     private String name;
