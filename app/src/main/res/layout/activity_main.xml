@@ -76,5 +76,16 @@
             android:background="@drawable/circle_10" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/img_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <VideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </android.support.design.widget.CoordinatorLayout>
