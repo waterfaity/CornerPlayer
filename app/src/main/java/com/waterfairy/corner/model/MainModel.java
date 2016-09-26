@@ -24,7 +24,7 @@ public class MainModel {
             return;
         }
         dataCallback.onFinding();
-        dataCallback.onSuccess(ImageInfoUtils.getFolderFromFolder(url));
+        dataCallback.onSuccess(ImageInfoUtils.getMediaFromFolder(url));
 
     }
 }
