@@ -15,7 +15,7 @@ import java.util.List;
  * Created by shui on 2016/9/17.
  */
 public class MainModel {
-    String url = Environment.getExternalStorageDirectory() + "/corner";
+    String url = Environment.getExternalStorageDirectory() + "/DCIM";
 
     public void findImg(FileFindIngCallback<List<ImageBean>> dataCallback) {
         File file = new File(url);
@@ -24,7 +24,7 @@ public class MainModel {
             return;
         }
         dataCallback.onFinding();
-        dataCallback.onSuccess(ImageInfoUtils.getFolderImager(url));
+        dataCallback.onSuccess(ImageInfoUtils.getFolderFromFolder(url));
 
     }
 }

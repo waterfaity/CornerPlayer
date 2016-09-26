@@ -1,6 +1,12 @@
 package com.waterfairy.corner.activity;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -8,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -21,6 +28,7 @@ import com.waterfairy.corner.application.MyApp;
 import com.waterfairy.corner.bean.ImageBean;
 import com.waterfairy.corner.presenter.MainPresenter;
 import com.waterfairy.corner.utils.AnnotationUtils;
+import com.waterfairy.corner.utils.ImageInfoUtils;
 import com.waterfairy.corner.utils.MetricsUtils;
 import com.waterfairy.corner.utils.PermissionUtils;
 import com.waterfairy.corner.view.MainView;
@@ -51,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     //时间轴
     private List<LinearLayout> mTimeContent;
     private TextView mPoint;
+    private Button bt_test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         initView();
         //初始化数据
         initData();
+        //测试用
+        test();
     }
 
     private void initPermission() {
@@ -106,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         ((RelativeLayout.LayoutParams) mScrollViewLib.getLayoutParams()).topMargin = getLen(MetricsUtils.top_library);
         //初始化时间轴view
         initScrollView();
+
 
     }
 
@@ -252,5 +264,28 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
             AnnotationUtils.transTo(mPoint, x - 10, y - 10);
         }
         return false;
+    }
+
+
+    private  void test(){
+        bt_test = (Button) findViewById(R.id.test);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.parse("file://"+ Environment
+                    .getExternalStorageDirectory()+ "DCIM")));
+        }else{ sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.parse("file://"+ Environment
+                .getExternalStorageDirectory()+ "DCIM")));}
+
+        bt_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dir = "/storage/emulated/0/DCIM";
+                List<ImageBean> imageBeanList = ImageInfoUtils.getMediaFromFolder(dir);
+                for (ImageBean imageBean:imageBeanList){
+                    Log.i("TYPE",imageBean.getType()+"1");
+                    Log.i("PATH",imageBean.getPath() +"1");
+                    Log.i("COMPRESSPATH",imageBean.getCompressPath() +"1");
+                }
+            }
+        });
     }
 }
