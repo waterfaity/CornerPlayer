@@ -9,7 +9,10 @@ public class MetricsUtils {
     public static int leftAlign = 110;//左边距
     public static int topAlign = 24;//上边距
 
-    public static int height_arrow = 19;//箭头高度
+    public static int time_sv_top = 16;
+    public static int time_sv_bottom = 14;
+
+    public static int height_arrow = 18;//箭头高度
     public static int bottom_arrow = 23;//箭头高度
 
     public static int size_time = 10;//时间 字体大小
@@ -27,9 +30,10 @@ public class MetricsUtils {
     public static int top_item_library = 16;
     public static int top_library = 36;
 
-    private static int item_time_padding = 16;//时间轴 边框距离
+    public static int item_time_padding = 16;//时间轴 边框距离
     //比例转换
     private static int height = 1280;
+    public static int arrow_bottom = 16;
 
     public static int getLen(int len) {
         return (int) (len / (float) height * MyApp.getInstance().getHeight());

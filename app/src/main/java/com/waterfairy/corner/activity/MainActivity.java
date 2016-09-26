@@ -41,12 +41,14 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     private int mHeight;
 
     //view
-    private HorizontalScrollView mScrollView;//水平滚动view
+    private HorizontalScrollView mTimeScrollView;//水平滚动view
     private RelativeLayout mMainView;//主view
     private LinearLayout mLLScrollView;//时间轴内容
-    private LinearLayout mLLStroke;//边框
+    //    private LinearLayout mLLStroke;//边框
     private GridView mGridView;//资源列表
     private HorizontalScrollView mScrollViewLib;//资源列表滚动
+    //arrow
+    private ImageView mArrow;
 
     //adapter
     private PicAdapter mAdapter;
@@ -99,15 +101,16 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     private void initView() {
         //主view
         mMainView.setPadding(getLen(MetricsUtils.leftAlign)
-                , getLen(MetricsUtils.topAlign)
+                , getLen(MetricsUtils.arrow_bottom)
                 , getLen(MetricsUtils.leftAlign)
-                , 0
-        );
+                , 0);
+        //时间轴滚动
+        mTimeScrollView.setPadding(0, getLen(MetricsUtils.time_sv_top), 0, getLen(MetricsUtils.time_sv_bottom));
         //时间轴边框
-        mLLStroke.getLayoutParams().height = getLen(MetricsUtils.height_item_time);
+//        mLLStroke.getLayoutParams().height = getLen(MetricsUtils.height_item_time);
         //时间轴内容
-        mLLScrollView.setPadding(0, 0, 0, getLen(MetricsUtils.bottom_item_time)
-        );
+//        mLLScrollView.setPadding(0, 0, 0, getLen(MetricsUtils.bottom_item_time)
+//        );
         //
         ((RelativeLayout.LayoutParams) mScrollViewLib.getLayoutParams()).topMargin = getLen(MetricsUtils.top_library);
         //初始化时间轴view
@@ -115,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         //预览
         mImgView.setOnClickListener(this);
         mVideoView.setOnClickListener(this);
+        //arrow
+        mArrow.getLayoutParams().height = getLen(MetricsUtils.height_arrow);
+        mArrow.getLayoutParams().width = getLen(MetricsUtils.height_arrow);
+
 
     }
 
@@ -175,13 +182,15 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     private void findView() {
         mMainView = (RelativeLayout) findViewById(R.id.main_view);
-        mLLStroke = (LinearLayout) findViewById(R.id.time_stroke);
+        mTimeScrollView = (HorizontalScrollView) findViewById(R.id.scroll_view_time);
+//        mLLStroke = (LinearLayout) findViewById(R.id.time_stroke);
         mLLScrollView = (LinearLayout) findViewById(R.id.scroll_view_lin);
         mGridView = (GridView) findViewById(R.id.grid);
         mScrollViewLib = (HorizontalScrollView) findViewById(R.id.scrollView_lib);
         mPoint = (TextView) findViewById(R.id.point);
         mVideoView = (VideoView) findViewById(R.id.video_view);
         mImgView = (ImageView) findViewById(R.id.img_view);
+        mArrow = (ImageView) findViewById(R.id.arrow);
     }
 
     private int getLen(int len) {

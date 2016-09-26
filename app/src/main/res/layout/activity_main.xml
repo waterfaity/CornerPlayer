@@ -11,16 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_centerHorizontal="true"
+            android:id="@+id/time_lin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:00"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow" />
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/main_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="111px">
+            android:layout_below="@+id/time_lin">
 
             <HorizontalScrollView
                 android:id="@+id/scroll_view_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_pic"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -28,23 +51,14 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16px">
+                    android:orientation="horizontal">
 
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <LinearLayout
-                android:id="@+id/time_stroke"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/scroll_view_time"
-                android:layout_alignLeft="@+id/scroll_view_time"
-                android:layout_alignRight="@+id/scroll_view_time"
-                android:background="@drawable/bg_item_pic"
-                android:orientation="horizontal" />
 
             <HorizontalScrollView
+
                 android:id="@+id/scrollView_lib"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
