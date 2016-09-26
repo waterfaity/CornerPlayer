@@ -1,7 +1,6 @@
 package com.waterfairy.corner.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.waterfairy.corner.R;
-import com.waterfairy.corner.activity.MainActivity;
 import com.waterfairy.corner.bean.ImageBean;
 import com.waterfairy.corner.utils.ImageInfoUtils;
 import com.waterfairy.corner.utils.MetricsUtils;
@@ -93,15 +91,17 @@ public class PicAdapter extends BaseAdapter {
                 } else {
                     mChecked.remove(position);
                 }
-
+                if (onSrcClickListener != null) {
+                    onSrcClickListener.onSrcClick(position, mList.get(position).getType(),mList.get(position).getPath());
+                }
             }
         });
         mViewHolder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (onLongClickListener != null) {
+                if (onSrcClickListener != null) {
                     int position = (int) ((CheckBox) v.getTag()).getTag();
-                    onLongClickListener.onOnLongLick(v, position);
+                    onSrcClickListener.onOnLongLick(v, position);
                 }
                 return false;
             }
@@ -109,9 +109,9 @@ public class PicAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setOnLongClickListener(OnLongClickListener clickListener) {
+    public void setOnSrcClickListener(OnSrcClickListener clickListener) {
 
-        this.onLongClickListener = clickListener;
+        this.onSrcClickListener = clickListener;
     }
 
     class ViewHolder {
@@ -133,11 +133,13 @@ public class PicAdapter extends BaseAdapter {
         }
     }
 
-    public interface OnLongClickListener {
+    public interface OnSrcClickListener {
         void onOnLongLick(View view, int position);
+
+        void onSrcClick(int pos, int type, String path);
     }
 
-    private OnLongClickListener onLongClickListener;
+    private OnSrcClickListener onSrcClickListener;
 
     private OnCheckedListener onCheckedListener;
 
