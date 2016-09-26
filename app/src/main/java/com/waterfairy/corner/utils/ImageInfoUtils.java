@@ -20,24 +20,31 @@ import java.util.List;
  * Created by m on 2016/9/18.
  */
 public class ImageInfoUtils {
- /*   public static String ImageCollection = "jpg" + "jpeg" + "png";
-    public static String VideoCollection = "mp4" + "3gp" + "avi" + "mkv";*/
+    /*   public static String ImageCollection = "jpg" + "jpeg" + "png";
+       public static String VideoCollection = "mp4" + "3gp" + "avi" + "mkv";*/
     public static int TYPE_IMAGE = 0;
     public static int TYPE_Video = 1;
     public static int TYPE_Folder = 2;
     public static ContentResolver resolver = MyApp.getInstance().getContentResolver();
-    public static List<ImageBean> images = new ArrayList<ImageBean>();
 
 
 
-    public  static  List<ImageBean> getMediaFromFolder(String dirPath){
-        getFolderFromFolder(dirPath);
-        getVideoFromFolder(dirPath);
-        getImageFromDir(dirPath);
-        return images;
+    /*
+    * 获取文件夹下的所有媒体信息
+    *
+    * */
+
+    public static List<ImageBean> getMediaFromFolder(String dirPath) {
+     List<ImageBean> medias = new ArrayList<ImageBean>();
+        medias.addAll(getFolderFromFolder(dirPath));
+       medias.addAll( getVideoFromFolder(dirPath));
+        medias.addAll(getImageFromDir(dirPath));
+        return medias;
     }
 
+
     public static List<ImageBean> getImageFromDir(String dirPath) {
+        List<ImageBean> images = new ArrayList<ImageBean>();
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Uri uri1 = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{
@@ -90,15 +97,16 @@ public class ImageInfoUtils {
     * */
 
     public static List<ImageBean> getVideoFromFolder(String dirPath) {
+        List<ImageBean> videos = new ArrayList<ImageBean>();
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         Uri uri1 = MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI;
         String[] projection = {
                 MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.TITLE,
-                MediaStore.Video.Media.DURATION};
-        String selection = MediaStore.Video.Media.DATA + " like ?";
-        String[] selectionArgs = {"%" + dirPath + "%"};
+                MediaStore.Video.Media.DATA,//路径
+                MediaStore.Video.Media.TITLE,//名字
+                MediaStore.Video.Media.DURATION};//时长
+        String selection = MediaStore.Video.Media.DATA + " like ?";//从路径中选取包含
+        String[] selectionArgs = {"%" + dirPath + "%"};//dirPath的
         String sortOrder = MediaStore.Video.Media.DATE_MODIFIED;
 
         Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
@@ -124,7 +132,7 @@ public class ImageInfoUtils {
                     }
                 }
 
-                images.add(imageBean);
+                videos.add(imageBean);
             }
             if (cursor1 != null) {
                 cursor1.close();
@@ -133,7 +141,7 @@ public class ImageInfoUtils {
             cursor.close();
 
         }
-        return images;
+        return videos;
     }
 
 
@@ -141,6 +149,8 @@ public class ImageInfoUtils {
     * 获取文件夹下含有图片与视频的文件夹的信息。
     * */
     public static List<ImageBean> getFolderFromFolder(String dirPath) {
+
+        List<ImageBean> folders = new ArrayList<ImageBean>();
 
         File folder = new File(dirPath);
         File[] files = folder.listFiles();
@@ -155,26 +165,29 @@ public class ImageInfoUtils {
                     imageBean.setPath(file.getPath());
                     imageBean.setName(file.getName());
                     cursor.close();
-                    images.add(imageBean);
+                    folders.add(imageBean);
                 } else {
                     Cursor cursor1 = resolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             null,
                             null, null, null
                     );
-                    if (cursor1!=null){
+                    if (cursor1 != null) {
                         ImageBean imageBean = new ImageBean();
                         imageBean.setType(TYPE_Folder);
                         imageBean.setPath(file.getPath());
                         imageBean.setName(file.getName());
                         cursor1.close();
-                        images.add(imageBean);
+                        folders.add(imageBean);
                     }
                 }
 
             }
         }
-        return images;
+        return folders;
     }
+
+
+
 
 
     /* *//*
