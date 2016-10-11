@@ -35,9 +35,9 @@ public class ImageInfoUtils {
     * */
 
     public static List<ImageBean> getMediaFromFolder(String dirPath) {
-     List<ImageBean> medias = new ArrayList<ImageBean>();
+        List<ImageBean> medias = new ArrayList<ImageBean>();
         medias.addAll(getFolderFromFolder(dirPath));
-       medias.addAll( getVideoFromFolder(dirPath));
+        medias.addAll(getVideoFromFolder(dirPath));
         medias.addAll(getImageFromDir(dirPath));
         return medias;
     }
@@ -46,7 +46,7 @@ public class ImageInfoUtils {
     public static List<ImageBean> getImageFromDir(String dirPath) {
         List<ImageBean> images = new ArrayList<ImageBean>();
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        Uri uri1 = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,//图片ID 与
                 MediaStore.Images.Media.DATA,
@@ -59,8 +59,6 @@ public class ImageInfoUtils {
         String sortOrder = MediaStore.Images.Media.DATE_MODIFIED;
 
         Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
-        Cursor cursor1 = null;
-
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 ImageBean imageBean = new ImageBean();
@@ -69,27 +67,21 @@ public class ImageInfoUtils {
                 imageBean.setPath(cursor.getString(1));
                 imageBean.setName(cursor.getString(2));
 
-                //根据MediaStore.Images.Media._ID 关联MediaStore.Images.Thumbnails.IMAGE_ID查找图片缓存缩略图位置。
-                String[] projection1 = {MediaStore.Images.Thumbnails.DATA};
-                String selection1 = MediaStore.Images.Thumbnails.IMAGE_ID + "=?";
-                String[] selectionArgs1 = {"%" + cursor.getString(0) + "%"};
-                cursor1 = resolver.query(uri1, projection1, selection1, selectionArgs1, null);
-                if (cursor1 != null) {
-                    while (cursor1.moveToNext()) {
-                        imageBean.setCompressPath(cursor1.getString(0));
-                    }
+                File file = new File(imageBean.getPath());
+                Log.i("par",file.getParent());
+                Log.i("dir",dirPath);
+                if (file.getParent().equals(dirPath)) {
+                    images.add(imageBean);
                 }
-
-                images.add(imageBean);
             }
-            if (cursor1 != null) {
-                cursor1.close();
-            }
-
             cursor.close();
 
         }
+        for (ImageBean imageBean:images){
+            Log.i("path",imageBean.getPath());
+        }
         return images;
+
     }
 
     /*
@@ -99,7 +91,6 @@ public class ImageInfoUtils {
     public static List<ImageBean> getVideoFromFolder(String dirPath) {
         List<ImageBean> videos = new ArrayList<ImageBean>();
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        Uri uri1 = MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI;
         String[] projection = {
                 MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DATA,//路径
@@ -110,8 +101,6 @@ public class ImageInfoUtils {
         String sortOrder = MediaStore.Video.Media.DATE_MODIFIED;
 
         Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
-        Cursor cursor1 = null;
-
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 ImageBean imageBean = new ImageBean();
@@ -121,23 +110,11 @@ public class ImageInfoUtils {
                 imageBean.setName(cursor.getString(2));
                 imageBean.setDuration(cursor.getString(3));
 
-                //根据MediaStore.Video.Media._ID 关联MediaStore.Video.Thumbnails.IMAGE_ID查找图片缓存缩略图位置。
-                String[] projection1 = {MediaStore.Video.Thumbnails.DATA};
-                String selection1 = MediaStore.Video.Thumbnails.VIDEO_ID + "=?";
-                String[] selectionArgs1 = {"%" + cursor.getString(0) + "%"};
-                cursor1 = resolver.query(uri1, projection1, selection1, selectionArgs1, null);
-                if (cursor1 != null) {
-                    while (cursor1.moveToNext()) {
-                        imageBean.setCompressPath(cursor1.getString(0));
-                    }
+                File file = new File(imageBean.getPath());
+                if (file.getParent() == dirPath) {
+                    videos.add(imageBean);
                 }
-
-                videos.add(imageBean);
             }
-            if (cursor1 != null) {
-                cursor1.close();
-            }
-
             cursor.close();
 
         }
